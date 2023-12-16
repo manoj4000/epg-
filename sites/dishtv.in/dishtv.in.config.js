@@ -11,7 +11,7 @@ dayjs.extend(customParseFormat)
 
 module.exports = {
   site: 'dishtv.in',
-  days: 2,
+  days: 7,
   url: 'https://www.dishtv.in/WhatsonIndiaWebService.asmx/LoadPagginResultDataForProgram',
   request: {
     method: 'POST',
