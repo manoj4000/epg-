@@ -1,17 +1,17 @@
-const axios = require('axios')
-const cheerio = require('cheerio')
-const dayjs = require('dayjs')
-const utc = require('dayjs/plugin/utc')
-const timezone = require('dayjs/plugin/timezone')
-const customParseFormat = require('dayjs/plugin/customParseFormat')
+const axios = require('axios');
+const cheerio = require('cheerio');
+const dayjs = require('dayjs');
+const utc = require('dayjs/plugin/utc');
+const timezone = require('dayjs/plugin/timezone');
+const customParseFormat = require('dayjs/plugin/customParseFormat');
 
-dayjs.extend(utc)
-dayjs.extend(timezone)
-dayjs.extend(customParseFormat)
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.extend(customParseFormat);
 
 module.exports = {
   site: 'dishtv.in',
-  days: 6,
+  days: 2,
   url: 'https://www.dishtv.in/WhatsonIndiaWebService.asmx/LoadPagginResultDataForProgram',
   request: {
     method: 'POST',
@@ -20,32 +20,37 @@ module.exports = {
         Channelarr: channel.site_id,
         fromdate: date.format('YYYYMMDDHHmm'),
         todate: date.add(1, 'd').format('YYYYMMDDHHmm')
-      }
+      };
     }
   },
   parser: function ({ content, date }) {
-    let programs = []
-    const data = parseContent(content)
-    const items = parseItems(data)
+    let programs = [];
+    const data = parseContent(content);
+    const items = parseItems(data);
     items.forEach(item => {
-      const title = parseTitle(item)
-      const start = parseStart(item, date)
-      const stop = parseStop(item, start)
-      if (title === 'No Information Available') return
+      const title = parseTitle(item);
+      const start = parseStart(item, date);
+      const stop = parseStop(item, start);
+      const imageUrl = parseImageUrl(item);
+      const channelLogoUrl = parseChannelLogoUrl(item);
+
+      if (title === 'No Information Available') return;
 
       programs.push({
         title,
         start: start.toString(),
-        stop: stop.toString()
-      })
-    })
+        stop: stop.toString(),
+        imageUrl,
+        channelLogoUrl,
+      });
+    });
 
-    return programs
+    return programs;
   },
   async channels() {
-    let channels = []
+    let channels = [];
 
-    const pages = await loadPageList()
+    const pages = await loadPageList();
     for (let page of pages) {
       const data = await axios
         .post(
@@ -54,110 +59,124 @@ module.exports = {
           { timeout: 30000 }
         )
         .then(r => r.data)
-        .catch(console.log)
+        .catch(console.log);
 
-      const $ = cheerio.load(data.d)
+      const $ = cheerio.load(data.d);
       $('.pgrid').each((i, el) => {
-        const onclick = $(el).find('.chnl-logo').attr('onclick')
-        const number = $(el).find('.cnl-fav > a > span').text().trim()
+        const onclick = $(el).find('.chnl-logo').attr('onclick');
+        const number = $(el).find('.cnl-fav > a > span').text().trim();
         const [, name, site_id] = onclick.match(/ShowChannelGuid\('([^']+)','([^']+)'/) || [
           null,
           '',
           ''
-        ]
+        ];
 
         channels.push({
           lang: 'en',
           number,
           site_id
-        })
-      })
+        });
+      });
     }
 
-    const names = await loadChannelNames()
+    const names = await loadChannelNames();
     channels = channels
       .map(channel => {
-        channel.name = names[channel.number]
+        channel.name = names[channel.number];
 
-        return channel
+        return channel;
       })
-      .filter(channel => channel.name)
+      .filter(channel => channel.name);
 
-    return channels
+    return channels;
   }
-}
+};
 
 async function loadPageList() {
   const data = await axios
     .get('https://www.dishtv.in/channelguide/')
     .then(r => r.data)
-    .catch(console.log)
+    .catch(console.log);
 
-  let pages = []
-  const $ = cheerio.load(data)
+  let pages = [];
+  const $ = cheerio.load(data);
   $('#MainContent_recordPagging li').each((i, el) => {
-    const onclick = $(el).find('a').attr('onclick')
+    const onclick = $(el).find('a').attr('onclick');
     const [, Channelarr, fromdate, todate] = onclick.match(
       /ShowNextPageResult\('([^']+)','([^']+)','([^']+)'/
-    ) || [null, '', '', '']
+    ) || [null, '', '', ''];
 
-    pages.push({ Channelarr, fromdate, todate })
-  })
+    pages.push({ Channelarr, fromdate, todate });
+  });
 
-  return pages
+  return pages;
 }
 
 async function loadChannelNames() {
-  const names = {}
+  const names = {};
   const data = await axios
     .post('https://www.dishtv.in/WebServiceMethod.aspx/GetChannelListFromMobileAPI', {
       strChannel: ''
     })
     .then(r => r.data)
-    .catch(console.log)
+    .catch(console.log);
 
-  const $ = cheerio.load(data.d)
+  const $ = cheerio.load(data.d);
   $('#tblpackChnl > div').each((i, el) => {
-    const num = $(el).find('p:nth-child(2)').text().trim()
-    const name = $(el).find('p').first().text().trim()
+    const num = $(el).find('p:nth-child(2)').text().trim();
+    const name = $(el).find('p').first().text().trim();
 
-    if (num === '') return
+    if (num === '') return;
 
-    names[num] = name
-  })
+    names[num] = name;
+  });
 
-  return names
+  return names;
 }
 
 function parseTitle(item) {
-  const $ = cheerio.load(item)
+  const $ = cheerio.load(item);
 
-  return $('a').text()
+  return $('a').text();
 }
 
-function parseStart(item) {
-  const $ = cheerio.load(item)
-  const onclick = $('i.fa-circle').attr('onclick')
-  const [, time] = onclick.match(/RecordingEnteryOpen\('.*','.*','(.*)','.*',.*\)/)
+function parseStart(item, date) {
+  const $ = cheerio.load(item);
+  const onclick = $('i.fa-circle').attr('onclick');
+  const [, time] = onclick.match(/RecordingEnteryOpen\('.*','.*','(.*)','.*',.*\)/);
 
-  return dayjs.tz(time, 'YYYYMMDDHHmm', 'Asia/Kolkata')
+  return dayjs.tz(time, 'YYYYMMDDHHmm', 'Asia/Kolkata');
 }
 
 function parseStop(item, start) {
-  const $ = cheerio.load(item)
-  const duration = $('*').data('time')
+  const $ = cheerio.load(item);
+  const duration = $('*').data('time');
 
-  return start.add(duration, 'm')
+  return start.add(duration, 'm');
+}
+
+function parseImageUrl(item) {
+  const $ = cheerio.load(item);
+  const imageUrl = $('img').attr('src');
+
+  return imageUrl;
+}
+
+function parseChannelLogoUrl(item) {
+  const $ = cheerio.load(item);
+  const channelLogoUrl = $(el).find('.chnl-logo img').attr('src');
+
+  return channelLogoUrl;
 }
 
 function parseContent(content) {
-  const data = JSON.parse(content)
+  const data = JSON.parse(content);
 
-  return data.d
+  return data.d;
 }
 
 function parseItems(data) {
-  const $ = cheerio.load(data)
+  const $ = cheerio.load(data);
 
-  return $('.datatime').toArray()
+  return $('.datatime').toArray();
 }
