@@ -11,7 +11,7 @@ dayjs.extend(customParseFormat);
 
 module.exports = {
   site: 'dishtv.in',
-  days: 2,
+  days: 4,
   url: 'https://www.dishtv.in/WhatsonIndiaWebService.asmx/LoadPagginResultDataForProgram',
   request: {
     method: 'POST',
@@ -164,7 +164,7 @@ function parseImageUrl(item) {
 
 function parseChannelLogoUrl(item) {
   const $ = cheerio.load(item);
-  const channelLogoUrl = $(el).find('.chnl-logo img').attr('src');
+  const channelLogoUrl = $('.chnl-logo img').attr('src');
 
   return channelLogoUrl;
 }
