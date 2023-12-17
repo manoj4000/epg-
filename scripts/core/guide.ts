@@ -24,7 +24,7 @@ export class Guide {
     this.logger = logger
     this.storage = new Storage()
     this.filepath = filepath
-    this.gzip = gzip || false
+    this.gzip = gzip || true
   }
 
   async save() {
