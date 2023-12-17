@@ -11,7 +11,7 @@ dayjs.extend(customParseFormat);
 
 module.exports = {
   site: 'dishtv.in',
-  days: 4,
+  days: 2,
   url: 'https://www.dishtv.in/WhatsonIndiaWebService.asmx/LoadPagginResultDataForProgram',
   request: {
     method: 'POST',
@@ -31,8 +31,8 @@ module.exports = {
       const title = parseTitle(item);
       const start = parseStart(item, date);
       const stop = parseStop(item, start);
-      const imageUrl = parseImageUrl(item);
       const channelLogoUrl = parseChannelLogoUrl(item);
+      const programImageUrls = parseProgramImageUrls(item); // New line
 
       if (title === 'No Information Available') return;
 
@@ -40,8 +40,8 @@ module.exports = {
         title,
         start: start.toString(),
         stop: stop.toString(),
-        imageUrl,
         channelLogoUrl,
+        programImageUrls, // New line
       });
     });
 
@@ -74,7 +74,9 @@ module.exports = {
         channels.push({
           lang: 'en',
           number,
-          site_id
+          site_id,
+          channelLogoUrl: parseChannelLogoUrl(el),
+          programImageUrls: parseProgramImageUrls(el), // Adjusted line
         });
       });
     }
@@ -167,6 +169,18 @@ function parseChannelLogoUrl(item) {
   const channelLogoUrl = $('.chnl-logo img').attr('src');
 
   return channelLogoUrl;
+}
+
+function parseProgramImageUrls(item) {
+  const $ = cheerio.load(item);
+  const programImageUrls = [];
+
+  $('img.program-image').each((index, element) => {
+    const imageUrl = $(element).attr('src');
+    programImageUrls.push(imageUrl);
+  });
+
+  return programImageUrls;
 }
 
 function parseContent(content) {
