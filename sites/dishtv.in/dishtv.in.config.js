@@ -175,7 +175,7 @@ function parseProgramImageUrls(item) {
   const $ = cheerio.load(item);
   const programImageUrls = [];
 
-  $('img.program-image').each((index, element) => {
+  $('img.imgwrap').each((index, element) => {
     const imageUrl = $(element).attr('src');
     programImageUrls.push(imageUrl);
   });
