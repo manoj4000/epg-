@@ -72,7 +72,7 @@
     "numeral": "^2.0.6",
     "parse-duration": "^1.0.0",
     "pdf-parse": "^1.1.1",
-    "serve": "^14.2.0",
+    "serve": "^14.2.1",
     "signale": "^1.4.0",
     "srcset": "^4.0.0",
     "table2array": "^0.0.2",
