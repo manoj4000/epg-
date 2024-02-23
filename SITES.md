@@ -30,7 +30,7 @@
 | [cubmu.com](sites/cubmu.com)                                       | 🟢     |                                             |
 | [dens.tv](sites/dens.tv)                                           | 🟢     |                                             |
 | [digiturk.com.tr](sites/digiturk.com.tr)                           | 🟢     |                                             |
-| [directv.com](sites/directv.com)                                   | 🟢     |                                             |
+| [directv.com](sites/directv.com)                                   | 🟡     | https://github.com/iptv-org/epg/issues/2284 |
 | [directv.com.ar](sites/directv.com.ar)                             | 🔴     | https://github.com/iptv-org/epg/issues/2248 |
 | [directv.com.uy](sites/directv.com.uy)                             | 🟢     |                                             |
 | [dishtv.in](sites/dishtv.in)                                       | 🟢     |                                             |
@@ -98,7 +98,7 @@
 | [nuevosiglo.com.uy](sites/nuevosiglo.com.uy)                       | 🟢     |                                             |
 | [nzxmltv.com](sites/nzxmltv.com)                                   | 🟢     |                                             |
 | [ontvtonight.com](sites/ontvtonight.com)                           | 🟢     |                                             |
-| [osn.com](sites/osn.com)                                           | 🟢     |                                             |
+| [osn.com](sites/osn.com)                                           | 🔴     | https://github.com/iptv-org/epg/issues/2282 |
 | [pbsguam.org](sites/pbsguam.org)                                   | 🟢     |                                             |
 | [player.ee.co.uk](sites/player.ee.co.uk)                           | 🟢     |                                             |
 | [pickx.be](sites/pickx.be)                                         | 🟢     |                                             |
@@ -114,7 +114,7 @@
 | [raiplay.it](sites/raiplay.it)                                     | 🟢     |                                             |
 | [reportv.com.ar](sites/reportv.com.ar)                             | 🟢     |                                             |
 | [rev.bs](sites/rev.bs)                                             | 🔴     | https://github.com/iptv-org/epg/issues/2255 |
-| [rotana.net](sites/rotana.net)                                     | 🟢     |                                             |
+| [rotana.net](sites/rotana.net)                                     | 🔴     | https://github.com/iptv-org/epg/issues/2297 |
 | [rtb.gov.bn](sites/rtb.gov.bn)                                     | 🔴     | https://github.com/iptv-org/epg/issues/2257 |
 | [rthk.hk](sites/rthk.hk)                                           | 🟢     |                                             |
 | [rtmklik.rtm.gov.my](sites/rtmklik.rtm.gov.my)                     | 🟢     |                                             |
@@ -129,7 +129,7 @@
 | [sky.com](sites/sky.com)                                           | 🟢     |                                             |
 | [sky.de](sites/sky.de)                                             | 🟢     |                                             |
 | [starhubtvplus.com](sites/starhubtvplus.com)                       | 🟢     |                                             |
-| [startimestv.com](sites/startimestv.com)                           | 🟢     |                                             |
+| [startimestv.com](sites/startimestv.com)                           | 🔴     | https://github.com/iptv-org/epg/issues/2296 |
 | [streamingtvguides.com](sites/streamingtvguides.com)               | 🟢     |                                             |
 | [superguidatv.it](sites/superguidatv.it)                           | 🟢     |                                             |
 | [taiwanplus.com](sites/taiwanplus.com)                             | 🟢     |                                             |
@@ -174,7 +174,7 @@
 | [tvpassport.com](sites/tvpassport.com)                             | 🟢     |                                             |
 | [tvplus.com.tr](sites/tvplus.com.tr)                               | 🟢     |                                             |
 | [tvprofil.com](sites/tvprofil.com)                                 | 🟢     |                                             |
-| [tvtv.us](sites/tvtv.us)                                           | 🔴     | https://github.com/iptv-org/epg/issues/2176 |
+| [tvtv.us](sites/tvtv.us)                                           | 🟢     |                                             |
 | [vidio.com](sites/vidio.com)                                       | 🟢     |                                             |
 | [virginmediatelevision.ie](sites/virginmediatelevision.ie)         | 🟢     |                                             |
 | [virgintvgo.virginmedia.com](sites/virgintvgo.virginmedia.com)     | 🟢     |                                             |
